@@ -1,0 +1,1014 @@
+/* ============================================================
+   FASE 1 OPDRACHT - REFERENTIEOPLOSSING
+   Portfolio Landing Page
+
+   Structuur:
+   1.  Reset
+   2.  Custom Properties
+   3.  Focus & Toegankelijkheid
+   4.  Typografie
+   5.  Knoppen
+   6.  Paginalayout
+   7.  Skip Link
+   8.  Navigatie
+   9.  Hero
+   10. Projecten (card-grid & card)
+   11. Over mij (about & skills)
+   12. Contact (contact-form)
+   13. Footer
+   14. Animaties & Transitions
+   15. Responsive (min-width breakpoints)
+   16. Donkere modus
+   17. Verminderde animatie
+   ============================================================ */
+
+
+/* ============================================================
+   1. RESET
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Verbeterde leesbaarheid voor de hele pagina */
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeSpeed;
+  line-height: 1.6;
+}
+
+/* Afbeeldingen nooit breder dan hun container */
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+/* Formulierelementen erven standaard geen font - dit forceert het */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Lange woorden breken af zodat ze niet buiten hun container lopen */
+p,
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: break-word;
+}
+
+
+/* ============================================================
+   2. CUSTOM PROPERTIES
+   Mobile first: dit zijn de waarden voor kleine schermen.
+   Breakpoints overschrijven ze waar nodig.
+   ============================================================ */
+:root {
+  /* Kleuren - lichte modus */
+  --color-primary:        #0070f3;
+  --color-primary-dark:   #005fd4;
+  --color-primary-light:  #eff6ff;
+  --color-accent:         #7c3aed;
+
+  --color-text:           #1a1a2e;
+  --color-text-muted:     #6b7280;
+  --color-text-inverse:   #ffffff;
+
+  --color-bg:             #f8fafc;
+  --color-bg-alt:         #f0f4ff;
+  --color-surface:        #ffffff;
+  --color-border:         #e5e7eb;
+
+  /* Typografie - vloeiend schaalbaar via clamp() */
+  --font-family:          system-ui, -apple-system, sans-serif;
+  --font-size-xs:         0.75rem;
+  --font-size-sm:         0.875rem;
+  --font-size-base:       1rem;
+  --font-size-lg:         1.125rem;
+  --font-size-h3:         clamp(1.1rem,  2.5vw, 1.35rem);
+  --font-size-h2:         clamp(1.5rem,  3.5vw, 2rem);
+  --font-size-h1:         clamp(2rem,    6vw,   3.5rem);
+
+  /* Spacing */
+  --space-xs:    0.25rem;
+  --space-sm:    0.5rem;
+  --space-md:    1rem;
+  --space-lg:    1.5rem;
+  --space-xl:    clamp(1.5rem, 5vw, 3rem);
+  --space-2xl:   clamp(2.5rem, 8vw, 6rem);
+
+  /* Layout */
+  --max-width:        1100px;
+  --border-radius-sm: 4px;
+  --border-radius:    8px;
+  --border-radius-lg: 16px;
+
+  /* Transitions */
+  --transition-fast:   0.15s ease;
+  --transition-base:   0.2s ease;
+  --transition-slow:   0.3s ease;
+}
+
+
+/* ============================================================
+   3. FOCUS & TOEGANKELIJKHEID
+   ============================================================ */
+
+/* Verberg de outline voor muisgebruikers, toon hem voor toetsenbord */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--border-radius-sm);
+}
+
+/* Schermlezer-only klasse: element is onzichtbaar maar leesbaar */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* ============================================================
+   4. TYPOGRAFIE
+   :where() = specificiteit 0, makkelijk te overschrijven
+   ============================================================ */
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+:where(h1, h2, h3, h4) {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+:where(p + p) {
+  margin-top: var(--space-md);
+}
+
+/* Maximale regellengte voor leesbaarheid */
+:where(p, li) {
+  max-width: 70ch;
+}
+
+
+/* ============================================================
+   5. KNOPPEN
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 0.6rem 1.4rem;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-fast),
+    box-shadow var(--transition-base);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Primaire variant */
+.btn--primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Outline variant */
+.btn--outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn--outline:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+/* Kleine variant */
+.btn--sm {
+  padding: 0.35rem 0.9rem;
+  font-size: var(--font-size-xs);
+}
+
+
+/* ============================================================
+   6. PAGINALAYOUT
+   CSS Grid: header (auto) - main (1fr) - footer (auto)
+   ============================================================ */
+.site-header,
+.site-footer,
+main > * {
+  /* Elke sectie centreert zichzelf via padding en max-width */
+  width: 100%;
+}
+
+
+/* ============================================================
+   7. SKIP LINK
+   Verborgen totdat hij focus krijgt via Tab
+   ============================================================ */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  z-index: 9999;
+  transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+  top: var(--space-md);
+}
+
+
+/* ============================================================
+   8. NAVIGATIE
+   Mobile first: links verborgen, hamburger zichtbaar
+   ============================================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-lg);
+}
+
+/* Logo */
+.nav__logo {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+.nav__logo-dot {
+  color: var(--color-primary);
+}
+
+/* Hamburger knop - zichtbaar op mobiel */
+.nav__toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.nav__toggle-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-text);
+  border-radius: 2px;
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+/* Navigatielinks - verborgen op mobiel */
+.nav__links {
+  display: none;
+  list-style: none;
+}
+
+.nav__link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: color var(--transition-base);
+}
+
+.nav__link:hover {
+  color: var(--color-text);
+}
+
+/* CTA knop in nav - verborgen op mobiel */
+.nav__cta {
+  display: none;
+}
+
+
+/* ============================================================
+   9. HERO
+   ============================================================ */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  align-items: flex-start;
+  min-height: 100dvh;     /* dvh i.p.v. vh voor mobiele browsers */
+  padding: var(--space-2xl) var(--space-lg);
+  padding-top: calc(var(--space-2xl) + 4rem); /* compenseer sticky nav */
+  background: linear-gradient(135deg, var(--color-bg-alt) 0%, #e8f5ff 100%);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.hero__eyebrow {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  max-width: none;
+}
+
+.hero__heading {
+  font-size: var(--font-size-h1);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  max-width: none;
+}
+
+.hero__title {
+  font-size: var(--font-size-h3);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  max-width: none;
+}
+
+.hero__description {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  max-width: 55ch;
+  line-height: 1.7;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;    /* Knoppen breken naar volgende rij op smal scherm */
+  gap: var(--space-md);
+}
+
+/* Decoratief code blok */
+.hero__visual {
+  width: 100%;
+}
+
+.hero__code-block {
+  background-color: #1e1e3f;
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-lg);
+  font-family: "Courier New", monospace;
+  font-size: var(--font-size-sm);
+  line-height: 1.8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.hero__code-line {
+  display: block;
+  color: #a8b2d8;
+}
+
+.hero__code-line--comment {
+  color: #637777;
+  font-style: italic;
+}
+
+.hero__code-line--indent {
+  padding-left: var(--space-lg);
+}
+
+.hero__code-key    { color: #c792ea; }
+.hero__code-string { color: #ecc48d; }
+
+
+/* ============================================================
+   10. PROJECTEN
+   ============================================================ */
+.projects {
+  padding: var(--space-2xl) var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* Sectietitel herbruikbaar voor alle secties */
+.section-header {
+  margin-bottom: var(--space-xl);
+}
+
+.section-header__title {
+  font-size: var(--font-size-h2);
+}
+
+.section-header__subtitle {
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
+  max-width: none;
+}
+
+/* Responsief kaartenraster zonder media queries */
+.card-grid {
+  display: grid;
+  /* auto-fill: vul zoveel kolommen als passen              */
+  /* minmax: minimaal 280px, maximaal 1fr                   */
+  /* min(280px, 100%): voorkomt overflow op heel smalle schermen */
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  gap: var(--space-lg);
+  list-style: none;
+}
+
+/* Kaart - Flexbox voor sticky footer */
+.card {
+  display: flex;
+  flex-direction: column;   /* Stapel image, body en footer verticaal */
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* :has() - kaart met badge krijgt automatisch een andere rand */
+.card:has(.card__badge) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+/* Kaartafbeelding / emoji-placeholder */
+.card__image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  background-color: var(--color-bg-alt);
+  font-size: 2.5rem;
+}
+
+/* Kaartinhoud groeit om beschikbare ruimte te vullen */
+.card__body {
+  flex: 1;                  /* Duwt de footer altijd naar de onderkant */
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.card__badge {
+  align-self: flex-start;
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  border-radius: 999px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card__title {
+  font-size: var(--font-size-h3);
+  max-width: none;
+}
+
+.card__description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  flex: 1;                  /* Beschrijving vult de ruimte, footer blijft onderaan */
+  max-width: none;
+}
+
+/* Tags als ul/li voor correcte semantiek */
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  list-style: none;
+  margin-top: var(--space-sm);
+}
+
+/* :where() voor de tags - specificiteit 0, makkelijk te overschrijven */
+:where(.card__tag) {
+  padding: 0.2rem 0.5rem;
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.card__footer {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+
+/* ============================================================
+   11. OVER MIJ
+   ============================================================ */
+.about {
+  background-color: var(--color-surface);
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+.about__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.about__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.about__lead {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+/* Skillbalkjes */
+.about__skills-title {
+  font-size: var(--font-size-h3);
+  margin-bottom: var(--space-lg);
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  list-style: none;
+}
+
+.skills-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.skills-list__label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.skills-list__bar {
+  height: 8px;
+  background-color: var(--color-bg);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.skills-list__fill {
+  height: 100%;
+  /* CSS custom property ingesteld via inline style op het element */
+  width: var(--fill);
+  background-color: var(--color-primary);
+  border-radius: 999px;
+  transform-origin: left;
+  animation: skill-bar-fill 0.8s ease-out both;
+}
+
+
+/* ============================================================
+   12. CONTACT
+   ============================================================ */
+.contact {
+  background-color: var(--color-bg-alt);
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+.contact__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.contact__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.contact__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  list-style: none;
+  margin-top: var(--space-sm);
+}
+
+.contact__detail {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+  max-width: none;
+}
+
+.contact__detail a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.contact__detail a:hover {
+  text-decoration: underline;
+}
+
+/* Formulier */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.contact-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.contact-form__label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.contact-form__required {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.contact-form__input {
+  padding: 0.65rem var(--space-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  width: 100%;
+}
+
+.contact-form__input:hover {
+  border-color: var(--color-text-muted);
+}
+
+.contact-form__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.15);
+}
+
+.contact-form__input--textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+/* :has() - verzend knop grijst uit als een verplicht veld leeg is */
+.contact-form:has(input:invalid) .contact-form__submit,
+.contact-form:has(textarea:invalid) .contact-form__submit {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contact-form__submit {
+  align-self: flex-start;
+}
+
+
+/* ============================================================
+   13. FOOTER
+   ============================================================ */
+.site-footer {
+  background-color: var(--color-text);
+  color: var(--color-text-inverse);
+  padding: var(--space-lg);
+}
+
+.site-footer__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.site-footer__copy {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.6);
+  max-width: none;
+}
+
+/* Sociale media links */
+.social {
+  display: flex;
+  gap: var(--space-md);
+  list-style: none;
+}
+
+.social__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  transition:
+    background-color var(--transition-base),
+    transform var(--transition-fast);
+}
+
+.social__link:hover {
+  background-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.site-footer__top {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.site-footer__top:hover {
+  color: white;
+}
+
+/* :is() - alle links in header en footer krijgen dezelfde hover-kleur */
+:is(.site-header, .site-footer) a:not(.btn):not(.nav__logo):not(.social__link):hover {
+  color: var(--color-primary);
+}
+
+
+/* ============================================================
+   14. ANIMATIES & KEYFRAMES
+   ============================================================ */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes skill-bar-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Hero content verschijnt bij laden */
+.hero__eyebrow   { animation: fade-in-up 0.5s ease-out 0.1s both; }
+.hero__heading   { animation: fade-in-up 0.5s ease-out 0.2s both; }
+.hero__title     { animation: fade-in-up 0.5s ease-out 0.3s both; }
+.hero__description { animation: fade-in-up 0.5s ease-out 0.4s both; }
+.hero__actions   { animation: fade-in-up 0.5s ease-out 0.5s both; }
+.hero__visual    { animation: fade-in-up 0.5s ease-out 0.6s both; }
+
+/* Kaarten verschijnen na elkaar */
+.card { animation: fade-in-up 0.4s ease-out both; }
+
+.card-grid li:nth-child(1) .card { animation-delay: 0.1s; }
+.card-grid li:nth-child(2) .card { animation-delay: 0.2s; }
+.card-grid li:nth-child(3) .card { animation-delay: 0.3s; }
+
+
+/* ============================================================
+   15. RESPONSIVE - MOBILE FIRST
+   Breakpoints: 640px (grote telefoon), 768px (tablet), 1024px (laptop)
+   ============================================================ */
+
+/* --- 640px: grote telefoon / kleine tablet --- */
+@media (min-width: 640px) {
+
+  .hero {
+    padding-top: calc(var(--space-2xl) + 5rem);
+  }
+
+  .contact-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Naam en email naast elkaar, subject en message full-width */
+  .contact-form__group:nth-child(3),
+  .contact-form__group:nth-child(4),
+  .contact-form__submit {
+    grid-column: 1 / -1;
+  }
+}
+
+/* --- 768px: tablet --- */
+@media (min-width: 768px) {
+
+  /* Nav: links zichtbaar, hamburger verborgen */
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+
+  .nav__toggle {
+    display: none;
+  }
+
+  .nav__cta {
+    display: inline-flex;
+  }
+
+  /* Hero: twee kolommen naast elkaar */
+  .hero {
+    flex-direction: row;
+    align-items: center;
+    min-height: 100dvh;
+  }
+
+  .hero__content {
+    flex: 1;
+  }
+
+  .hero__visual {
+    flex: 0 0 340px;  /* Vast breedte: groeit niet, krimpt niet */
+  }
+
+  /* About: tekst en skills naast elkaar */
+  .about__content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .about__text {
+    flex: 1;
+  }
+
+  .about__skills {
+    flex: 0 0 280px;
+  }
+
+  /* Contact: intro en formulier naast elkaar */
+  .contact__content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .contact__intro {
+    flex: 1;
+  }
+
+  .contact-form {
+    flex: 1;
+    display: flex;   /* Overschrijf de grid uit 640px breakpoint */
+  }
+
+  .contact-form__group,
+  .contact-form__submit {
+    grid-column: unset;
+  }
+
+  /* Footer: drie elementen op één rij */
+  .site-footer__content {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+/* --- 1024px: laptop --- */
+@media (min-width: 1024px) {
+  .hero__visual {
+    flex: 0 0 400px;
+  }
+}
+
+
+/* ============================================================
+   16. DONKERE MODUS
+   Overschrijf alleen de kleur-variabelen - alle componenten
+   passen zich automatisch aan via var()
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary:        #60a5fa;
+    --color-primary-dark:   #3b82f6;
+    --color-primary-light:  rgba(96, 165, 250, 0.1);
+
+    --color-text:           #f0f4f8;
+    --color-text-muted:     #94a3b8;
+    --color-text-inverse:   #0f172a;
+
+    --color-bg:             #0f172a;
+    --color-bg-alt:         #1e293b;
+    --color-surface:        #1e293b;
+    --color-border:         #334155;
+  }
+
+  /* Code blok in hero heeft vaste kleuren - handmatig aanpassen */
+  .hero__code-block {
+    background-color: #0d0d1f;
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Formulierinput achtergrond */
+  .contact-form__input {
+    background-color: var(--color-bg);
+  }
+}
+
+
+/* ============================================================
+   17. VERMINDERDE ANIMATIE
+   Altijd als laatste - overschrijft alle animatie-regels
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:       0.01ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:      0.01ms !important;
+    scroll-behavior:          auto   !important;
+  }
+}
