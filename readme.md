@@ -5,7 +5,7 @@ van de frontend development cursus.
 
 ## Live demo
 
-[ Bekijk de live pagina ](https://code-compendium.github.io/fase_1_eindopdracht/)
+[ Bekijk de live pagina ](https://code-compendium.github.io/Fase-1-Eindopdracht/)
 
 ## Technische verantwoording
 
